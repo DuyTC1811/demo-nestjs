@@ -9,9 +9,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-    paths:
-    - 'demo-nestjs/Dockerfile'
-
 jobs:
   build-and-push-docker:
     runs-on: ubuntu-latest
@@ -28,6 +25,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
+        pwd $$ ls
         docker build -t my-image .
 
     # - name: push image to docker hub
