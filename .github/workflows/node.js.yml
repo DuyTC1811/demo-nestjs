@@ -56,12 +56,5 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker buildx create --use
-        pwd && ls -a
-        docker buildx build \
-          --cache-from=type=local,src=/tmp/.buildx-cache \
-          --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
-          -f Dockerfile \
-          -t ${{ secrets.DOCKER_USERNAME }}/demo:latest \
-          --push .
+        docker buildx build --push -t t ${{ secrets.DOCKER_USERNAME }}/demo:latest .
 
