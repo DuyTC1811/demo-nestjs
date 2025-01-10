@@ -4,6 +4,8 @@ FROM node:22-alpine
 # Đặt thư mục làm việc trong container
 WORKDIR /usr/src/app
 
+# Chạy lệnh build dự án
+RUN npm run build
 # Sao chép thư mục dist
 COPY ./dist ./dist
 
