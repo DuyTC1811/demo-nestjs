@@ -60,5 +60,5 @@ jobs:
     # Bước 9: Build và push Docker image
     - name: Build and push Docker image
       run: |
-        docker buildx build --push --platform linux/amd64 --builder kamal-local-docker-container -t ghcr.io/moo/hru-app:47a5d9b23a82d8d48220fe6dce1c2d93deb39ca7 -t ghcr.io/moo/hru-app:latest --label service="moo-hru-app" --file Dockerfile .
+        docker buildx build --file Dockerfile .
 
