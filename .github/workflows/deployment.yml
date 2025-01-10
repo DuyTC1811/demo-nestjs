@@ -26,7 +26,8 @@ jobs:
     - name: Build and push Docker image
       run: |
         pwd $$ ls
-        docker build -t my-image .
+        cd demo-nestjs
+        pwd $$ ls
 
     # - name: push image to docker hub
     #   run: |
