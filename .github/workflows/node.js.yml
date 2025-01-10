@@ -57,9 +57,11 @@ jobs:
     - name: Build and push Docker image
       run: |
         docker buildx create --use
-        pwd
+        ls /home/runner/work/demo-nestjs/demo-nestjs/Dockerfile
         docker buildx build \
           --cache-from=type=local,src=/tmp/.buildx-cache \
           --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
+          -f /home/runner/work/demo-nestjs/demo-nestjs/Dockerfile \
           -t ${{ secrets.DOCKER_USERNAME }}/demo:latest \
-          --push .
+          --push 
+
