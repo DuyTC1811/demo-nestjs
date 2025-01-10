@@ -70,3 +70,6 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > keypair.pem && chmod 600 keypair.pem
           ssh -o StrictHostKeyChecking=no -i keypair.pem ${{ secrets.SSH_HOST }} '
           docker pull docker.io/duytc81811/demo1:latest
+          docker ps -a --filter "ancestor=duytc81811/demo1:latest" -q | xargs -r docker rm -f
+          docker rmi duytc81811/demo1:latest
+          docker-compose -f docker-compose.yml up -d'
