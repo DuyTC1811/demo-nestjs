@@ -2,7 +2,7 @@ version: '3.9'                                    # Version của Docker Compose
 
 services:
   app:                                            # Dịch vụ cho ứng dụng NestJS
-    image: docker.io/duytc81811/demo:latest
+    image: docker.io/duytc81811/demo1:latest
     container_name: nestjs-app                    # Tên container
     ports:
       - "3000:3000"                               # Map cổng từ localhost vào container
