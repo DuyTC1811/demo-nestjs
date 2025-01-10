@@ -16,10 +16,6 @@ jobs:
   build-and-push-docker:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [22.x]
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
