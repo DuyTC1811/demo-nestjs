@@ -4,8 +4,8 @@ FROM node:22-alpine
 # Đặt thư mục làm việc trong container
 WORKDIR /usr/src/app
 
-# Sao chép mã nguồn đã build (dist) vào container
-COPY ..
+# Sao chép thư mục dist
+COPY ./dist ./dist
 
 # Sao chép file package.json và package-lock.json để cài đặt dependency
 COPY package*.json ./
