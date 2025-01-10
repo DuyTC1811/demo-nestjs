@@ -63,5 +63,5 @@ jobs:
           --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
           -f Dockerfile \
           -t ${{ secrets.DOCKER_USERNAME }}/demo:latest \
-          --push 
+          --push .
 
