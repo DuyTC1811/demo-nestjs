@@ -28,7 +28,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build ./demo-nestjs/ -t ${{ secrets.DOCKER_USERNAME }}/demo:latest .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/demo:latest .
 
     - name: push image to docker hub
       run: |
