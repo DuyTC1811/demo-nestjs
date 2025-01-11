@@ -1,40 +1,67 @@
-# Stage 1: Build
-# Sử dụng Node.js phiên bản 22 làm image cơ sở cho giai đoạn build
-FROM node:22 AS builder
+###################
+# BASE IMAGE
+###################
+FROM node:22-alpine AS base
 
-# Đặt thư mục làm việc trong container là /usr/src/app
+# Thiết lập thư mục làm việc
 WORKDIR /usr/src/app
 
-# Sao chép các tệp package.json và package-lock.json (nếu có) vào container
-COPY package*.json ./
+# Tạo user non-root để tăng cường bảo mật
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
 
-# Cài đặt tất cả các dependency cần thiết để build dự án
-RUN npm install
+###################
+# DEVELOPMENT
+###################
+FROM node:22-alpine AS development
 
-# Sao chép toàn bộ mã nguồn vào thư mục làm việc trong container
-COPY . .
-
-# Chạy lệnh build dự án, thường là tạo phiên bản sản phẩm (production-ready)
-RUN npm run build
-
-# Stage 2: Production
-# Sử dụng Node.js phiên bản 22-alpine (nhẹ hơn) cho môi trường production
-FROM node:22-alpine
-
-# Đặt thư mục làm việc trong container là /usr/src/app
+# Thiết lập thư mục làm việc và chuyển quyền sở hữu
 WORKDIR /usr/src/app
+COPY --chown=node:node package*.json ./
 
-# Sao chép thư mục dist từ giai đoạn builder (chứa mã nguồn đã build xong)
-COPY --from=builder /usr/src/app/dist ./dist
+# Cài đặt tất cả dependencies
+RUN npm ci
 
-# Sao chép file package.json và package-lock.json vào container
-COPY package*.json ./
+# Sao chép mã nguồn
+COPY --chown=node:node . .
 
-# Cài đặt các dependency chỉ cần thiết cho môi trường production
-RUN npm ci --only=production
-
-# Mở cổng 3000 để ứng dụng có thể nhận request từ bên ngoài
+# Mở cổng (nếu cần thiết)
 EXPOSE 3000
 
-# Chạy ứng dụng bằng lệnh node với entry point là dist/main
-CMD ["node", "dist/main"]
+# Command mặc định cho development
+CMD ["npm", "run", "start:dev"]
+
+###################
+# BUILD
+###################
+FROM node:18-alpine AS build
+
+# Thiết lập thư mục làm việc
+WORKDIR /usr/src/app
+COPY --from=development /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node . .
+
+# Tạo production build
+RUN npm run build
+
+###################
+# PRODUCTION
+###################
+FROM node:18-alpine AS production
+
+# Thiết lập thư mục làm việc và sao chép mã đã build
+WORKDIR /usr/src/app
+COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/package*.json ./
+
+# Chỉ giữ lại các dependency cần thiết cho production
+RUN npm ci --only=production && npm cache clean --force
+
+# Chạy ứng dụng dưới quyền user non-root
+USER appuser
+
+# Mở cổng (nếu cần thiết)
+EXPOSE 3000
+
+# Command mặc định cho production
+CMD ["node", "dist/main.js"]
