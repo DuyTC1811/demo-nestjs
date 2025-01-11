@@ -59,17 +59,17 @@ jobs:
           --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
           -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/demo1:latest --push .
 
-  deployment:
-    runs-on: ubuntu-latest
-    needs: build-and-push-docker
-    name: Deploy to Server
-    steps:
-      - uses: actions/checkout@v3
-      - name: Execute SSH commmands on remote server
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > keypair.pem && chmod 600 keypair.pem
-          ssh -o StrictHostKeyChecking=no -i keypair.pem ${{ secrets.SSH_HOST }} '
-          sudo docker pull docker.io/duytc81811/demo1:latest
-          sudo docker rm -f nestjs-app
-          sudo docker rmi duytc81811/demo1
-          sudo docker compose -f docketes.yml up -d'
+  # deployment:
+  #   runs-on: ubuntu-latest
+  #   needs: build-and-push-docker
+  #   name: Deploy to Server
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Execute SSH commmands on remote server
+  #       run: |
+  #         echo "${{ secrets.SSH_PRIVATE_KEY }}" > keypair.pem && chmod 600 keypair.pem
+  #         ssh -o StrictHostKeyChecking=no -i keypair.pem ${{ secrets.SSH_HOST }} '
+  #         sudo docker pull docker.io/duytc81811/demo1:latest
+  #         sudo docker rm -f nestjs-app
+  #         sudo docker rmi duytc81811/demo1
+  #         sudo docker compose -f docketes.yml up -d'
