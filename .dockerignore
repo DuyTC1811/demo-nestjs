@@ -1,3 +1,5 @@
+Dockerfile
+.dockerignore
 # Loại bỏ thư mục node_modules
 node_modules
 
