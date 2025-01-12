@@ -1,20 +1,20 @@
 version: '3.9'                                    # Version của Docker Compose
 
 services:
-  app:                                            # Dịch vụ cho ứng dụng NestJS
-    image: docker.io/duytc81811/demo1:latest
+  app:
+    image: docker.io/duytc81811/demo1:latest      # registry hub
     container_name: nestjs-app                    # Tên container
     ports:
       - "3000:3000"                               # Map cổng từ localhost vào container
 #     environment:
 #       - NODE_ENV=production
-#       - DATABASE_HOST=db                          # Hostname của database (tên service bên dưới)
+#       - DATABASE_HOST=db                        # Hostname của database (tên service bên dưới)
 #       - DATABASE_PORT=5432
 #       - DATABASE_USERNAME=postgres
 #       - DATABASE_PASSWORD=secret
 #       - DATABASE_NAME=nestjs
 #     depends_on:
-#       - database                                  # Đảm bảo container `db` chạy trước khi khởi động `app`
+#       - database                                  # Đảm bảo container `database` chạy trước khi khởi động `app`
 
 #   database:                                       # Dịch vụ cho PostgreSQL
 #     image: postgres:15                            # Sử dụng image PostgreSQL

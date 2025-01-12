@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 # Copy file package.json và package-lock.json để cài đặt dependencies
 COPY package*.json ./
 
-# Cài đặt dependencies chỉ dành cho production
+# Cài đặt dependencies
 RUN npm ci --only=production && npm cache clean --force
 
 # Sao chép mã nguồn vào image
