@@ -95,3 +95,4 @@ jobs:
   #         ssh -o StrictHostKeyChecking=no -i keypair.pem ${{ secrets.SSH_HOST }} '
   #         docker compose -f docketes.yml pull &&
   #         docker compose -f docketes.yml up -d --remove-orphans'
+
