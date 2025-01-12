@@ -70,7 +70,7 @@ jobs:
     # Bước 9: Gửi thông báo Telegram
     - name: Notify Telegram
       uses: appleboy/telegram-action@master
-      # if: always() # always(), success(), failure(), cancelled()
+      if: always() # always(), success(), failure(), cancelled()
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }} # User ID hoặc tên kênh
         token: ${{ secrets.TELEGRAM_TOKEN }}  # Token của bot Telegram
