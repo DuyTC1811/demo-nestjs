@@ -1,8 +1,6 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -81,7 +79,8 @@ jobs:
 
   deployment:
     runs-on: ubuntu-latest
-    needs: build-and-push-docker # Chỉ chạy khi job 'build-and-push-docker' thành công
+    needs: build-and-push-docker                          # Chỉ chạy khi job 'build-and-push-docker' thành công
+    if: github.ref == 'refs/heads/main' # Chỉ chạy khi code được merge vào main
     name: Deploy to Server
 
     steps:
