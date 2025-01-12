@@ -81,7 +81,6 @@ jobs:
           Description: ${{ github.event.pull_request.body }}
           Please check the logs for more details.
 
-
   # # Bước 10: Deploy ứng dụng lên server thông qua SSH
   # deployment:
   #   runs-on: ubuntu-latest
