@@ -70,7 +70,7 @@ jobs:
     # Bước 9: Gửi thông báo Telegram
     - name: Notify Telegram
       uses: appleboy/telegram-action@master
-      if: failure() # always(), success(), failure(), cancelled()
+      # if: failure() # always(), success(), failure(), cancelled()
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}   # User ID hoặc tên kênh
         token: ${{ secrets.TELEGRAM_TOKEN }}  # Token của bot Telegram
@@ -84,7 +84,7 @@ jobs:
   # # Bước 10: Deploy ứng dụng lên server thông qua SSH
   # deployment:
   #   runs-on: ubuntu-latest
-  #   needs: build-and-push-docker
+  #   needs: build-and-push-docker              # Chỉ chạy khi job 'build-and-push-docker' thành công
   #   name: Deploy to Server
   #   steps:
   #     - uses: actions/checkout@v3
