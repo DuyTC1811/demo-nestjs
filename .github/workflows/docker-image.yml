@@ -78,10 +78,9 @@ jobs:
             - Title: ${{ github.event.pull_request.title }}
 
   deployment:
-    on-merge:
-      if: ${{ github.event.pull_request.merged == true }} # Chỉ chạy nếu pull request được merge
     runs-on: ubuntu-latest
     needs: build-and-push-docker                          # Chỉ chạy khi job 'build-and-push-docker' thành công
+    if: github.ref == 'refs/heads/main' # Chỉ chạy khi code được merge vào main
     name: Deploy to Server
 
     steps:
