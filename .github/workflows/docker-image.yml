@@ -72,7 +72,7 @@ jobs:
       uses: appleboy/telegram-action@master
       # if: always() # always(), success(), failure(), cancelled()
       with:
-        chat: ${{ secrets.TELEGRAM_CHAT_ID }} # User ID hoặc tên kênh
+        to: ${{ secrets.TELEGRAM_CHAT_ID }} # User ID hoặc tên kênh
         token: ${{ secrets.TELEGRAM_TOKEN }}  # Token của bot Telegram
         message: |
           ❌ Build failed!
