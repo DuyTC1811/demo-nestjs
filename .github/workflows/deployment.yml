@@ -1,0 +1,48 @@
+name: Node.js CI
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'                   # Chỉ chạy khi code được merge vào main
+    name: Deploy to Server
+
+    steps:
+      # Clone mã nguồn
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Thực hiện deploy qua SSH
+      - name: Execute SSH commands on remote server
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > keypair.pem && chmod 600 keypair.pem
+          ssh -o StrictHostKeyChecking=no -i keypair.pem ${{ secrets.SSH_HOST }} '
+          docker compose -f docker-compose.yml pull &&
+          docker compose -f docker-compose.yml up -d --remove-orphans'
+
+      # Gửi thông báo Telegram Success
+      - name: Notify Telegram
+        uses: appleboy/telegram-action@master
+        if: success()
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🎉 Deployment Succeeded!
+            - Pull Request By: ${{ github.event.pull_request.user.login }}
+            - Title: ${{ github.event.pull_request.title }}
+
+      # Gửi thông báo Telegram Nếu Failure
+      - name: Notify Telegram
+        uses: appleboy/telegram-action@master
+        if: failure()
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ❌ Deployment Failure!
+            - Pull Request By: ${{ github.event.pull_request.user.login }}
+            - Title: ${{ github.event.pull_request.title }}
