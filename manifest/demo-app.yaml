@@ -1,0 +1,21 @@
+apiVersion: apps/v1                # Phiên bản API Kubernetes sử dụng (apps/v1)
+kind: Deployment                   # Loại tài nguyên (Deployment quản lý việc triển khai ứng dụng)
+metadata:                          # Thông tin mô tả về Deployment
+  name: demo-app                   # Tên của Deployment
+  labels:                          # Nhãn để nhận dạng Deployment
+    app: demo-app                  # Nhãn key-value: app=demo-app
+spec:                              # Đặc tả cách triển khai
+  replicas: 3                      # Số lượng bản sao (pods) sẽ được tạo và duy trì
+  selector:                        # Cách Deployment xác định các pods thuộc về nó
+    matchLabels:                   # Chọn pods có nhãn phù hợp
+      app: demo-app                # Pods phải có nhãn app=demo-app
+  template:                        # Mẫu để tạo pods mới
+    metadata:                      # Thông tin mô tả cho pods được tạo
+      labels:                      # Nhãn áp dụng cho pods
+        app: demo-app              # Mỗi pod sẽ có nhãn app=demo-app
+    spec:                          # Đặc tả cấu hình pod
+      containers:                  # Danh sách các containers trong mỗi pod
+        - name: demo-app           # Tên container
+          image: duytc81811/demo:latest  # Image Docker sử dụng
+          ports:                    # Cổng mà container sử dụng
+            - containerPort: 3000   # Container lắng nghe trên cổng 3000
