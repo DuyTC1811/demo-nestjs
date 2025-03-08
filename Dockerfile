@@ -1,17 +1,16 @@
-# Base image
-FROM node:22-alpine
-
-# Thiết lập thư mục làm việc
+# Build stage
+FROM node:22-alpine AS build
 WORKDIR /usr/src/app
-
-# Copy file package.json và package-lock.json để cài đặt dependencies
-COPY package*.json ./
-
-# Cài đặt dependencies
-RUN npm ci --only=production && npm cache clean --force
-
-# Sao chép mã nguồn vào image
 COPY . .
+RUN npm ci
+RUN npm run build
+
+# Production stage
+FROM node:22-alpine
+WORKDIR /usr/src/app
+COPY --from=build /usr/src/app/dist ./dist
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
 
 # Chạy ứng dụng dưới quyền user non-root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
