@@ -5,7 +5,7 @@ metadata:                          # Thông tin mô tả về Deployment
   labels:                          # Nhãn để nhận dạng Deployment
     app: demo-app                  # Nhãn key-value: app=demo-app
 spec:                              # Đặc tả cách triển khai
-  replicas: 10                      # Số lượng bản sao (pods) sẽ được tạo và duy trì
+  replicas: 1                      # Số lượng bản sao (pods) sẽ được tạo và duy trì
   selector:                        # Cách Deployment xác định các pods thuộc về nó
     matchLabels:                   # Chọn pods có nhãn phù hợp
       app: demo-app                # Pods phải có nhãn app=demo-app
