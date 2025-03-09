@@ -24,26 +24,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-
-      # Bước 3: Cache thư viện Node.js
-      -
-        name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ matrix.node-version }}-
+          cache: 'pnpm'
+          cache-dependency-path: '**/pnpm-lock.yaml'
 
       # Bước 4: Cài đặt dependencies
       -
         name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       # Bước 5: Build ứng dụng
       -
         name: Build application
-        run: npm run build --if-present
+        run: pnpm run build --if-present
 
       # Bước 6: Đăng nhập vào Docker Hub
       -
