@@ -15,9 +15,4 @@ RUN npm ci --only=production && npm cache clean --force
 # Chạy ứng dụng dưới quyền user non-root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
-
-# Mở cổng (nếu cần thiết)
-EXPOSE 3000
-
-# Command mặc định cho production
 CMD ["node", "dist/main.js"]
