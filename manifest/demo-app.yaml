@@ -28,8 +28,44 @@ metadata:                          # Thông tin mô tả về Service
     app: demo-app                  # Nhãn key-value: app=demo-app
 spec:                              # Đặc tả cấu hình Service
   selector:                        # Chọn pods mà Service sẽ định tuyến traffic đến
-    app: demo-app                  # Chọn pods có nhãn app=demo-app
+    app.kubernetes.io/name: demo-app # Chọn pods có nhãn app=demo-app
   ports:                           # Cấu hình cổng
+    - name: http
+    - protocol: TCP
     - port: 80                     # Cổng mà Service sẽ lắng nghe
       targetPort: 3000             # Cổng trên pod mà Service sẽ chuyển tiếp traffic đến
   type: NodePort                   # ClusterIP: chỉ truy cập được trong cluster, NodePort: bất kể ip của node, LoadBalancer: từ cloud provider
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-app-ingress
+  annotations:
+    kubernetes.io/ingress.class: haproxy
+    haproxy.org/path-rewrite: /
+    # Chuyển hướng HTTP sang HTTPS
+    haproxy.org/ssl-redirect: "true"
+    # Buộc sử dụng HTTPS
+    haproxy.org/ssl-passthrough: "false"
+    # Thiết lập HSTS để hướng dẫn trình duyệt luôn sử dụng HTTPS
+    haproxy.org/hsts: "true"
+    haproxy.org/hsts-max-age: "15768000"
+    haproxy.org/hsts-include-subdomains: "true"
+    haproxy.org/hsts-preload: "true"
+spec:
+  tls:
+    - hosts:
+        - demo-app.example.com
+      secretName: demo-app-tls-secret
+  rules:
+    - host: demo-app.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: demo-app-service
+                port:
+                  number: 80
