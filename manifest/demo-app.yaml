@@ -19,3 +19,17 @@ spec:                              # Đặc tả cách triển khai
           image: duytc81811/demo:latest  # Image Docker sử dụng
           ports:                    # Cổng mà container sử dụng
             - containerPort: 3000   # Container lắng nghe trên cổng 3000
+---
+apiVersion: v1                     # Phiên bản API Kubernetes sử dụng (v1)
+kind: Service                      # Loại tài nguyên (Service để truy cập vào ứng dụng)
+metadata:                          # Thông tin mô tả về Service
+  name: demo-app-service           # Tên của Service
+  labels:                          # Nhãn để nhận dạng Service
+    app: demo-app                  # Nhãn key-value: app=demo-app
+spec:                              # Đặc tả cấu hình Service
+  selector:                        # Chọn pods mà Service sẽ định tuyến traffic đến
+    app: demo-app                  # Chọn pods có nhãn app=demo-app
+  ports:                           # Cấu hình cổng
+    - port: 80                     # Cổng mà Service sẽ lắng nghe
+      targetPort: 3000             # Cổng trên pod mà Service sẽ chuyển tiếp traffic đến
+  type: NodePort                   # ClusterIP: chỉ truy cập được trong cluster, NodePort: bất kể ip của node, LoadBalancer: từ cloud provider
