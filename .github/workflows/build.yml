@@ -24,18 +24,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-          cache-dependency-path: '**/pnpm-lock.yaml'
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'
 
       # Bước 4: Cài đặt dependencies
       -
         name: Install dependencies
-        run: pnpm install
+        run: npm install
 
       # Bước 5: Build ứng dụng
       -
         name: Build application
-        run: pnpm run build --if-present
+        run: npm run build --if-present
 
       # Bước 6: Đăng nhập vào Docker Hub
       -
