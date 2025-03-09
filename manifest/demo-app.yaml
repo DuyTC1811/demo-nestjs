@@ -44,22 +44,11 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: haproxy
     haproxy.org/path-rewrite: /
-    # Chuyển hướng HTTP sang HTTPS
-    haproxy.org/ssl-redirect: "true"
-    # Buộc sử dụng HTTPS
-    haproxy.org/ssl-passthrough: "false"
-    # Thiết lập HSTS để hướng dẫn trình duyệt luôn sử dụng HTTPS
-    haproxy.org/hsts: "true"
-    haproxy.org/hsts-max-age: "15768000"
-    haproxy.org/hsts-include-subdomains: "true"
-    haproxy.org/hsts-preload: "true"
+    # Tắt các cấu hình HTTPS
+    haproxy.org/ssl-redirect: "false"
 spec:
-  tls:
-    - hosts:
-        - demo-app.example.com
-      secretName: demo-app-tls-secret
   rules:
-    - host: demo-app.example.com
+    - host: demo-app.example.com  # Thay đổi thành domain thực tế của bạn
       http:
         paths:
           - path: /
@@ -69,3 +58,35 @@ spec:
                 name: demo-app-service
                 port:
                   number: 80
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: demo-app-ingress
+#  annotations:
+#    kubernetes.io/ingress.class: haproxy
+#    haproxy.org/path-rewrite: /
+#    # Chuyển hướng HTTP sang HTTPS
+#    haproxy.org/ssl-redirect: "true"
+#    # Buộc sử dụng HTTPS
+#    haproxy.org/ssl-passthrough: "false"
+#    # Thiết lập HSTS để hướng dẫn trình duyệt luôn sử dụng HTTPS
+#    haproxy.org/hsts: "true"
+#    haproxy.org/hsts-max-age: "15768000"
+#    haproxy.org/hsts-include-subdomains: "true"
+#    haproxy.org/hsts-preload: "true"
+#spec:
+#  tls:
+#    - hosts:
+#        - demo-app.example.com
+#      secretName: demo-app-tls-secret
+#  rules:
+#    - host: demo-app.example.com
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: demo-app-service
+#                port:
+#                  number: 80
