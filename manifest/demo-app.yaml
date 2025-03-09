@@ -28,7 +28,7 @@ metadata:                          # Thông tin mô tả về Service
     app: demo-app                  # Nhãn key-value: app=demo-app
 spec:                              # Đặc tả cấu hình Service
   selector:                        # Chọn pods mà Service sẽ định tuyến traffic đến
-    app.kubernetes.io/name: demo-app # Chọn pods có nhãn app=demo-app
+    app: demo-app                   # Chọn pods có nhãn app=demo-app
   ports:                           # Cấu hình cổng
     - name: http
     - protocol: TCP
